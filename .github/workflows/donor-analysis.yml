@@ -1,0 +1,49 @@
+name: T95 donor analysis and incomplete H20 DT candidate
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/donor-analysis.yml
+      - scripts/prepare_t95_dtb.c
+      - tests/check_donor_candidate.py
+permissions:
+  contents: read
+jobs:
+  offline-candidate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install offline analysis tools
+        run: sudo apt-get update -qq && sudo apt-get install -y gcc make libfdt-dev xz-utils
+      - name: Download and verify immutable donor release
+        working-directory: ${{ runner.temp }}
+        run: |
+          curl -fL --retry 2 -o donor.img.xz https://github.com/well83/t95-h616-android12/releases/download/axp313-final/T95-AXP313-eMMC-a12-final-user.img.xz
+          echo 'de6d272e10297fbe6332734845966da5b92bc660c92bcff318cb17552aa72126  donor.img.xz' | sha256sum -c -
+          xz -dk donor.img.xz
+          echo '35884d993ae67ae3cb2b76de7adf1710bba7546c3890300d7c4f4ef7278349b7  donor.img' | sha256sum -c -
+      - name: Build pinned Allwinner container reader
+        working-directory: ${{ runner.temp }}
+        run: |
+          git init sunxi-fw
+          git -C sunxi-fw remote add origin https://github.com/apritzel/sunxi-fw.git
+          git -C sunxi-fw fetch --depth 1 origin 2e2aaf484efe2fc0218561d2c4f231f7fd76fb34
+          git -C sunxi-fw checkout --detach FETCH_HEAD
+          make -C sunxi-fw
+      - name: Extract and prepare offline DT candidate
+        run: |
+          mkdir -p "$RUNNER_TEMP/result"
+          "$RUNNER_TEMP/sunxi-fw/sunxi-fw" info -v "$RUNNER_TEMP/donor.img" > "$RUNNER_TEMP/result/container-info.txt"
+          "$RUNNER_TEMP/sunxi-fw/sunxi-fw" extract -n wty:sunxi.fex -o "$RUNNER_TEMP/result/donor.dtb" "$RUNNER_TEMP/donor.img"
+          echo "0a657fd232a6a2c094b7707cc99d3fdcc6ca5aa9fae38c28c778e3e41c444d8f  $RUNNER_TEMP/result/donor.dtb" | sha256sum -c -
+          cc -D_POSIX_C_SOURCE=200809L -std=c11 -Wall -Wextra -Werror scripts/prepare_t95_dtb.c -lfdt -o "$RUNNER_TEMP/prepare-dtb"
+          "$RUNNER_TEMP/prepare-dtb" "$RUNNER_TEMP/result/donor.dtb" "$RUNNER_TEMP/result/H20-INCOMPLETE-NOT-FIRMWARE.dtb"
+          python3 tests/check_donor_candidate.py "$RUNNER_TEMP/result/donor.dtb" "$RUNNER_TEMP/result/H20-INCOMPLETE-NOT-FIRMWARE.dtb" | tee "$RUNNER_TEMP/result/check.txt"
+          if "$RUNNER_TEMP/prepare-dtb" "$RUNNER_TEMP/result/donor.dtb" "$RUNNER_TEMP/result/H20-INCOMPLETE-NOT-FIRMWARE.dtb"; then exit 1; fi
+          cp docs/T95_DONOR_PORT.md "$RUNNER_TEMP/result/README-NOT-FIRMWARE.md"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: H20-offline-DT-candidate-NOT-FIRMWARE
+          path: ${{ runner.temp }}/result/

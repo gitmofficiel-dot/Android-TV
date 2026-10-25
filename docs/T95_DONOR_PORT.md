@@ -76,3 +76,32 @@ H20 partition-compatible boot/vendor_boot strategy; rebuilt SSV driver/firmware
 integration; GPU/media/HAL matching; complete IR mapping; USB0 switching; full
 Android product build, signature chain, recovery validation and real-device tests.
 Android16 additionally needs an Android16-compatible vendor/FCM migration.
+
+## Subsequent executed results
+GitHub donor job40208003635 passed, including hash verification, extraction,
+strict C compilation and exact-property comparison. It only produced a DT candidate.
+Reference kernel job40206920820 also passed (Image + modules target), with artifacts:
+- kernel:12605101165; diagnostics/config/hash:12604646999.
+This does not validate the reference kernel on H20 hardware.
+
+Stock boot0 was extracted read-only at user-area byte8192, length65536.
+SHA256:464597a4512133d0cbc8799e7aa180b5bbf8607f1712522e3c1042b8ca035dda.
+The pinned sunxi-fw reader reported a matching eGON checksum0xba846139.
+Its first H616 DRAM record is type0x7 at792MHz; alternate records are present.
+The default record alone does not prove which fallback profile trained the RAM.
+The stock bootloader must be retained until a replacement is independently tested.
+
+A kernel gzip experiment reduced donor kernel23701512 to10619068 bytes.
+This is only a size experiment: it does not establish that stock U-Boot accepts
+that encoding/header, nor does it solve vendor_boot, AVB or init/vendor integration.
+No repacked boot image is represented as bootable.
+
+## SSV compile experiment queued
+Source cdhigh/armbian_sv6256p @43c2ede238b39ba3abb1129323a998495c6b8be9
+was downloaded and inspected. Its hwif/sdio/sdio.c contains SDIO3030:3030,
+matching captured bus IDs, but these shared IDs do not identify an exact RF chip.
+Upstream targets Linux6.x; compatibility with BSP5.4 is NOT claimed.
+The repository now has a compile-only script, run after the reference kernel build,
+that preserves errors rather than installing a foreign module on the device.
+Firmware/config matching, SDIO timing, RF calibration and Android HAL integration
+remain untested even if compilation succeeds. No module is loaded by these jobs.

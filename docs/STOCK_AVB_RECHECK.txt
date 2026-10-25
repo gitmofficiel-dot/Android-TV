@@ -1,0 +1,15 @@
+Verifying image parts/vbmeta.img using embedded public key
+vbmeta: Successfully verified SHA256_RSA4096 vbmeta struct in parts/vbmeta.img
+vbmeta_system: Successfully verified chain partition descriptor matches expected data
+--
+Verifying image parts/vbmeta_system.img using embedded public key
+vbmeta: Successfully verified SHA256_RSA2048 vbmeta struct in parts/vbmeta_system.img
+system: Successfully verified sha1 hashtree of parts/system.img for image of 1805381632 bytes
+vbmeta_vendor: Successfully verified chain partition descriptor matches expected data
+--
+Verifying image parts/vbmeta_vendor.img using embedded public key
+vbmeta: Successfully verified SHA256_RSA2048 vbmeta struct in parts/vbmeta_vendor.img
+vendor: Successfully verified sha1 hashtree of parts/vendor.img for image of 202825728 bytes
+boot: Successfully verified sha256 hash of parts/boot.img for image of 19722240 bytes
+recovery: Successfully verified sha256 hash of parts/recovery.img for image of 26101760 bytes
+product: Successfully verified sha1 hashtree of parts/product.img for image of 56385536 bytes

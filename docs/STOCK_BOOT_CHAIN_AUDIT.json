@@ -1,0 +1,399 @@
+{
+  "schema": 1,
+  "analysis_kind": "Static offline firmware analysis; no device execution",
+  "image": {
+    "compressed_sha256": "4e25a18c945f3d28445cb48875ae567715f72a05e5ab3aef9048aff76953c456",
+    "raw_sha256": "dd2db326486d188f94f4de1a7710049377ab645f122ee3bffc2ade7f442db293",
+    "raw_size": 7818182656,
+    "both_hashes_rechecked_this_analysis": true
+  },
+  "boot0_copies": [
+    {
+      "offset": 8192,
+      "size": 65536,
+      "sha256": "464597a4512133d0cbc8799e7aa180b5bbf8607f1712522e3c1042b8ca035dda",
+      "checksum_ok": true,
+      "first_dram_record": {
+        "clock_mhz": 792,
+        "type": 7,
+        "raw_cells": [
+          792,
+          7,
+          101058054,
+          218959117,
+          6425,
+          2575888110,
+          12538,
+          67108864,
+          0,
+          131,
+          28,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2147483648,
+          0,
+          0,
+          801144960,
+          1076835193,
+          219155215,
+          286462227,
+          24673,
+          0
+        ]
+      },
+      "uart_port": 0,
+      "uart_pins": [
+        {
+          "raw": [
+            8,
+            0,
+            2,
+            1,
+            255,
+            255,
+            0,
+            0
+          ],
+          "pin": "PH0",
+          "function": 2
+        },
+        {
+          "raw": [
+            8,
+            1,
+            2,
+            1,
+            255,
+            255,
+            0,
+            0
+          ],
+          "pin": "PH1",
+          "function": 2
+        }
+      ]
+    },
+    {
+      "offset": 262144,
+      "size": 65536,
+      "sha256": "464597a4512133d0cbc8799e7aa180b5bbf8607f1712522e3c1042b8ca035dda",
+      "checksum_ok": true,
+      "first_dram_record": {
+        "clock_mhz": 792,
+        "type": 7,
+        "raw_cells": [
+          792,
+          7,
+          101058054,
+          218959117,
+          6425,
+          2575888110,
+          12538,
+          67108864,
+          0,
+          131,
+          28,
+          1,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          2147483648,
+          0,
+          0,
+          801144960,
+          1076835193,
+          219155215,
+          286462227,
+          24673,
+          0
+        ]
+      },
+      "uart_port": 0,
+      "uart_pins": [
+        {
+          "raw": [
+            8,
+            0,
+            2,
+            1,
+            255,
+            255,
+            0,
+            0
+          ],
+          "pin": "PH0",
+          "function": 2
+        },
+        {
+          "raw": [
+            8,
+            1,
+            2,
+            1,
+            255,
+            255,
+            0,
+            0
+          ],
+          "pin": "PH1",
+          "function": 2
+        }
+      ]
+    }
+  ],
+  "boot_package_copies": [
+    {
+      "offset": 12582912,
+      "size": 1294336,
+      "checksum_ok": true,
+      "entries": [
+        {
+          "name": "u-boot",
+          "offset": 2048,
+          "size": 1032192,
+          "encrypted": 0,
+          "type": 3,
+          "run_address": "0x0",
+          "sha256": "7c28bb55d6d587ba4d59db4211f136c4d78f4d641c51c6618d0952d89a02c88b"
+        },
+        {
+          "name": "monitor",
+          "offset": 1034240,
+          "size": 103120,
+          "encrypted": 0,
+          "type": 3,
+          "run_address": "0x0",
+          "sha256": "9f24b5f4f1285510270f6eec42ec271ce9ff13208b50da6c7e53d2003577ad00"
+        },
+        {
+          "name": "dtbo",
+          "offset": 1137664,
+          "size": 4544,
+          "encrypted": 0,
+          "type": 3,
+          "run_address": "0x0",
+          "sha256": "8a805a593121c645d7b57bc3de8e1b2a6b2e3d90718ac08ad891adaa262c8169"
+        },
+        {
+          "name": "dtb",
+          "offset": 1142784,
+          "size": 144384,
+          "encrypted": 0,
+          "type": 3,
+          "run_address": "0x0",
+          "sha256": "aedf9c098513dabb36ce9ee85d4b23cd731d778f635e2f2cd90e81b85266c204"
+        }
+      ],
+      "sha256": "6bf174fddf7c762314409bda1ab0b8a46184021738589fb0ea95d7255534917e"
+    },
+    {
+      "offset": 16793600,
+      "size": 1294336,
+      "checksum_ok": true,
+      "entries": [
+        {
+          "name": "u-boot",
+          "offset": 2048,
+          "size": 1032192,
+          "encrypted": 0,
+          "type": 3,
+          "run_address": "0x0",
+          "sha256": "7c28bb55d6d587ba4d59db4211f136c4d78f4d641c51c6618d0952d89a02c88b"
+        },
+        {
+          "name": "monitor",
+          "offset": 1034240,
+          "size": 103120,
+          "encrypted": 0,
+          "type": 3,
+          "run_address": "0x0",
+          "sha256": "9f24b5f4f1285510270f6eec42ec271ce9ff13208b50da6c7e53d2003577ad00"
+        },
+        {
+          "name": "dtbo",
+          "offset": 1137664,
+          "size": 4544,
+          "encrypted": 0,
+          "type": 3,
+          "run_address": "0x0",
+          "sha256": "8a805a593121c645d7b57bc3de8e1b2a6b2e3d90718ac08ad891adaa262c8169"
+        },
+        {
+          "name": "dtb",
+          "offset": 1142784,
+          "size": 144384,
+          "encrypted": 0,
+          "type": 3,
+          "run_address": "0x0",
+          "sha256": "aedf9c098513dabb36ce9ee85d4b23cd731d778f635e2f2cd90e81b85266c204"
+        }
+      ],
+      "sha256": "6bf174fddf7c762314409bda1ab0b8a46184021738589fb0ea95d7255534917e"
+    }
+  ],
+  "uboot_version": "U-Boot 2018.05 (Apr 09 2024 - 12:11:33 +0800) Allwinner Technology",
+  "monitor_version_strings": [
+    "v1.0(debug):25d6c57",
+    "Built : 15:23:19, 2021-01-20"
+  ],
+  "env": {
+    "crc32_ok": true,
+    "crc32": "95972bf5",
+    "covered_size": 131072,
+    "selected": {
+      "earlyprintk": "sunxi-uart,0x05000000",
+      "console": "ttyS0,115200",
+      "nand_root": "/dev/nand0p4",
+      "mmc_root": "/dev/mmcblk0p4",
+      "init": "/init",
+      "loglevel": "8",
+      "selinux": "0",
+      "cma": "64M",
+      "setargs_nand": "setenv bootargs earlyprintk=${earlyprintk} initcall_debug=${initcall_debug} console=${console} loglevel=${loglevel} root=${nand_root} init=${init} partitions=${partitions} cma=${cma} snum=${snum} mac_addr=${mac} wifi_mac=${wifi_mac} bt_mac=${bt_mac} selinux=${selinux} specialstr=${specialstr} hx_flag=${hx_flag} gpt=1",
+      "setargs_mmc": "setenv  bootargs earlyprintk=${earlyprintk} initcall_debug=${initcall_debug} console=${console} loglevel=${loglevel} root=${mmc_root} rootwait init=${init} partitions=${partitions} cma=${cma} snum=${snum} mac_addr=${mac} wifi_mac=${wifi_mac} bt_mac=${bt_mac} selinux=${selinux} specialstr=${specialstr} hx_flag=${hx_flag} gpt=1",
+      "boot_normal": "sunxi_flash read 45000000 boot;bootm 45000000",
+      "boot_recovery": "sunxi_flash read 45000000 recovery;bootm 45000000",
+      "boot_fastboot": "fastboot",
+      "bootdelay": "0",
+      "bootcmd": "run setargs_nand boot_normal"
+    },
+    "runtime_rewrites_not_observed": true
+  },
+  "boot_image": {
+    "sha256": "070cecbf07a61f407b7aa760985a5b41c2d366fe4fc31bd196d5ded96868afb8",
+    "partition_size": 33554432,
+    "header_version": 2,
+    "page_size": 2048,
+    "kernel_size": 18806792,
+    "kernel_address": "0x40080000",
+    "ramdisk_size": 771329,
+    "ramdisk_address": "0x43000000",
+    "tags_address": "0x40000100",
+    "ramdisk_compression": "gzip",
+    "dtb_size": 137860,
+    "dtb_address": "0x44000000"
+  },
+  "first_stage_init": {
+    "elf_class": "ELF32",
+    "machine": "ARM",
+    "no_program_interpreter": true,
+    "sha256": "aab0e67921026fba3aa0a2267fb79b19199028c7a0136d3917106811c49b6485"
+  },
+  "second_stage_init": {
+    "system_root_init_symlink": "/system/bin/init",
+    "elf_class": "ELF32",
+    "machine": "ARM",
+    "interpreter": "/system/bin/bootstrap/linker",
+    "sha256": "8e608f720849b04ae4128bf612bd32032985ff3ba4ab92da2bc091761e2d1be8"
+  },
+  "kernel_config_selected": [
+    "CONFIG_ARM64=y",
+    "CONFIG_BLK_DEV_INITRD=y",
+    "CONFIG_RD_GZIP=y",
+    "CONFIG_RD_BZIP2=y",
+    "CONFIG_RD_LZMA=y",
+    "CONFIG_RD_XZ=y",
+    "CONFIG_RD_LZO=y",
+    "CONFIG_RD_LZ4=y",
+    "CONFIG_MODVERSIONS=y",
+    "CONFIG_CMDLINE=\"earlyprintk=sunxi-uart,0x05000000 loglevel=8 initcall_debug=1 console=ttyS0 init=/init\"",
+    "CONFIG_CMDLINE_FROM_BOOTLOADER=y",
+    "CONFIG_COMPAT=y",
+    "CONFIG_DM_VERITY=y",
+    "CONFIG_DM_VERITY_FEC=y",
+    "CONFIG_ANDROID_BINDER_IPC=y",
+    "CONFIG_ANDROID_BINDER_DEVICES=\"binder,hwbinder,vndbinder\"",
+    "CONFIG_SECURITY_SELINUX_BOOTPARAM=y",
+    "CONFIG_SECURITY_SELINUX_BOOTPARAM_VALUE=1"
+  ],
+  "first_stage_fstab": "# Android fstab file.\n# The filesystem that contains the filesystem checker binary (typically /system) cannot\n# specify MF_CHECK, and must come before any filesystems that do specify MF_CHECK\n#<src>                                                 <mnt_point>  <type>   <mnt_flags and options>      <fs_mgr_flags>\nsystem                                                 /system      ext4     ro,barrier=1                 wait,first_stage_mount,logical\nvendor                                                 /vendor      ext4     ro,barrier=1                 wait,first_stage_mount,logical\nproduct                                                /product     ext4     ro,barrier=1                 wait,first_stage_mount,logical\n/dev/block/by-name/UDISK                               /data        f2fs     noatime,nosuid,nodev,discard wait,check,formattable,quota,reservedsize=33554432\n/dev/block/by-name/cache                               /cache       ext4     noatime,nosuid,nodev,barrier=1,data=ordered,nomblk_io_submit,noauto_da_alloc,errors=panic wait,check,formattable\n/dev/block/by-name/metadata                            /metadata    ext4     nodev,noatime,nosuid,errors=panic wait,first_stage_mount,formattable\n/dev/block/by-name/boot                                /boot        emmc     defaults                     defaults\n/dev/block/by-name/recovery                            /recovery    emmc     defaults                     defaults\n/dev/block/by-name/misc                                /misc        emmc     defaults                     defaults\n/dev/block/by-name/super                               /super       emmc     defaults                     defaults\n/dev/block/by-name/frp                                 /persistent  emmc     defaults                     defaults\n/dev/block/zram0                                       none         swap     defaults                     zramsize=75%\n/devices/platform/soc/sdc0/mmc_host/mmc*               auto         auto     defaults                     voldmanaged=extsd:auto,encryptable=footer\n/devices/platform/soc/usbc0/usb*                       auto         auto     defaults                     voldmanaged=usb:auto,encryptable=footer\n/devices/platform/soc/*.ehci*-controller/usb*          auto         auto     defaults                     voldmanaged=usb:auto,encryptable=footer\n/devices/platform/soc/*.ohci*-controller/usb*          auto         auto     defaults                     voldmanaged=usb:auto,encryptable=footer\n# add for recovery\nnone                                                   /sdcard      emmc     defaults                     defaults\n",
+  "usb_role": {
+    "property": "persist.vendor.usb0device",
+    "device_value": "1",
+    "device_read_trigger": "/sys/devices/platform/soc/usbc0/usb_device",
+    "host_value": "0",
+    "host_read_trigger": "/sys/devices/platform/soc/usbc0/usb_host",
+    "udc": "5100000.udc-controller",
+    "source": "vendor:/etc/init/hw/init.sun50iw9p1.usb.rc"
+  },
+  "services": {
+    "remote": {
+      "name": "multi_ir",
+      "binary": "/system/bin/multi_ir",
+      "class": "main",
+      "user": "root",
+      "groups": [
+        "system",
+        "input",
+        "uhid"
+      ],
+      "source": "system:/system/etc/init/multi_ir.rc"
+    },
+    "wifi_identification": {
+      "name": "wl_info",
+      "binary": "/vendor/bin/hw/wireless_hwinfo",
+      "oneshot": true
+    },
+    "gpu_module": "/vendor/modules/mali_kbase.ko",
+    "zygote": "/system/bin/app_process -Xzygote /system/bin --zygote --start-system-server"
+  },
+  "modules": {
+    "ssv6x5x": {
+      "vermagic": "4.9.170 SMP preempt mod_unload modversions aarch64",
+      "sdio_alias": "sdio:c*v3030d3030*",
+      "config_parameter": "stacfgpath",
+      "firmware_parameter": "cfgfirmwarepath",
+      "binary_contains_chip_families": [
+        "SSV6006A",
+        "SSV6006C",
+        "SSV6006D"
+      ],
+      "exact_populated_chip_not_identified_by_strings": true
+    },
+    "mali_kbase": {
+      "version": "r20p0-01rel0 (UK version 11.17)"
+    }
+  },
+  "avb_info_current": {
+    "algorithm": "SHA256_RSA4096",
+    "flags": 0,
+    "rollback_index": 0,
+    "chain_partitions": [
+      "vbmeta_system",
+      "vbmeta_vendor"
+    ],
+    "boot_hash_descriptor_size": 19722240,
+    "recovery_hash_descriptor_size": 26101760,
+    "signatures_verified_in_prior_analysis_of_same_raw_sha256": true,
+    "root_of_trust_or_efuse_state_not_established": true,
+    "signatures_verified_this_analysis": true,
+    "child_keys_match_parent_descriptors": true,
+    "tool_source": "https://android.googlesource.com/platform/external/avb/+/refs/heads/main/avbtool.py",
+    "tool_sha256": "e5a664a38db623da00f080219bc0ee60a640a9dc4a872803616fae4938ac749b"
+  },
+  "limitations": [
+    "No real-device boot or restoration test",
+    "No hardware eMMC boot0/boot1 regions or RPMB in this full user-area image",
+    "No UART runtime trace; active DRAM fallback and U-Boot environment rewrites not observed",
+    "No assumption that changing a boot header alone makes Android12/16 bootable",
+    "No userdata/private/FRP contents inspected; only selected boot/system/vendor/product evidence"
+  ]
+}

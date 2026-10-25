@@ -76,3 +76,74 @@ int main(void) {
 
     def test_linux_5_17_proc_operations_and_new_private_data(self):
         self.check_version(5, 17)
+
+class MacCompatibilityTests(unittest.TestCase):
+    def check_version(self, major, minor):
+        patch = (ROOT / 'patches/ssv6x5x/0002-mac80211-pre-MLO-compat.patch').read_text()
+        section = patch.split('+++ b/smac/ssv_mac80211_compat.h\n', 1)[1].split('diff --git ', 1)[0]
+        header = '\n'.join(line[1:] for line in section.splitlines()
+                           if line.startswith('+') and not line.startswith('+++')) + '\n'
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / 'linux').mkdir()
+            (root / 'linux/version.h').write_text(
+                '#define KERNEL_VERSION(a,b,c) (((a)<<16)+((b)<<8)+(c))\n'
+                f'#define LINUX_VERSION_CODE KERNEL_VERSION({major},{minor},0)\n')
+            (root / 'linux/types.h').write_text(
+                'typedef unsigned short u16; typedef unsigned int u32; typedef unsigned long long u64;\n')
+            (root / 'compat.h').write_text(header)
+            source = '''#include "compat.h"
+struct ht { int supported; };
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 19, 0)
+struct sta { struct { struct ht ht_cap; } deflink; };
+#else
+struct sta { struct ht ht_cap; };
+#endif
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 0, 0)
+struct vif { struct { int assoc, aid; } cfg; };
+typedef u64 expected_changed_t;
+#define EXPECTED_LINK_ARG unsigned int link,
+#else
+struct vif { struct { int assoc, aid; } bss_conf; };
+typedef u32 expected_changed_t;
+#define EXPECTED_LINK_ARG
+#endif
+static void bss(ssv_bss_changed_t changed) { (void)changed; }
+static int conf(int unused, SSV_CONF_TX_LINK_ARG u16 queue) {
+    (void)unused;
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 0, 0)
+    (void)link_id;
+#endif
+    return queue;
+}
+struct ops { void (*bss)(expected_changed_t); int (*conf)(int, EXPECTED_LINK_ARG u16); };
+static struct ops operations = { bss, conf };
+int main(void) {
+    struct sta sta = {0}; struct vif vif = {0};
+    SSV_STA_HT_CAP(&sta).supported = 1;
+    SSV_VIF_ASSOC(&vif) = 1; SSV_VIF_AID(&vif) = 42;
+    operations.bss(1);
+    if (sizeof(ssv_bss_changed_t) != sizeof(expected_changed_t)) return 1;
+    if (!SSV_STA_HT_CAP(&sta).supported || !SSV_VIF_ASSOC(&vif) || SSV_VIF_AID(&vif) != 42) return 2;
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 0, 0)
+    return operations.conf(0, 0, 3) != 3;
+#else
+    return operations.conf(0, 3) != 3;
+#endif
+}
+'''
+            (root / 'test.c').write_text(source)
+            result = subprocess.run(['cc', '-std=c11', '-Wall', '-Wextra', '-Werror',
+                                     '-I', str(root), str(root / 'test.c'), '-o', str(root / 'test')],
+                                    capture_output=True, text=True)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            subprocess.run([str(root / 'test')], check=True)
+
+    def test_5_4_legacy_station_and_vif(self):
+        self.check_version(5, 4)
+
+    def test_5_19_station_default_link_and_legacy_vif(self):
+        self.check_version(5, 19)
+
+    def test_6_0_station_default_link_and_vif_cfg(self):
+        self.check_version(6, 0)

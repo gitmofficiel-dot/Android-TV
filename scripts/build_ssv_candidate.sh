@@ -27,7 +27,9 @@ git -C "$driver" checkout --detach FETCH_HEAD
 test "$(git -C "$driver" rev-parse HEAD)" = "$revision"
 git -C "$driver" apply --check "$project_root/patches/ssv6x5x/0001-procfs-5.4-compat.patch"
 git -C "$driver" apply "$project_root/patches/ssv6x5x/0001-procfs-5.4-compat.patch"
-sha256sum "$project_root/patches/ssv6x5x/0001-procfs-5.4-compat.patch" > "$diagnostics/SSV-PATCH.sha256"
+git -C "$driver" apply --check "$project_root/patches/ssv6x5x/0002-mac80211-pre-MLO-compat.patch"
+git -C "$driver" apply "$project_root/patches/ssv6x5x/0002-mac80211-pre-MLO-compat.patch"
+sha256sum "$project_root"/patches/ssv6x5x/*.patch > "$diagnostics/SSV-PATCH.sha256"
 make -C "$kernel" O="$kernel_out" ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- \
   KERNEL_SRC="$kernel" INSTALL_MOD_PATH="$kernel_out/modules-staging" \
   M="$driver" -j2 modules 2>&1 | tee "$diagnostics/ssv-build.log"

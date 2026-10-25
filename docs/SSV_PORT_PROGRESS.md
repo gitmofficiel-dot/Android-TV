@@ -38,3 +38,14 @@ vendor ramdisk, DTB and AVB. This is a potential size strategy, not an approved
 ramdisk change. Recovery-service dependencies, boot mode, header/AVB acceptance
 and actual board settings remain unresolved. No boot.img was repacked or signed.
 See RAMDISK_SIZE_EXPERIMENT.json. Removing binaries is not proof of compatibility.
+
+## Retry40215615750 actual result
+Base kernel built and its workspace was cached. Procfs errors were resolved;
+the compiler advanced to smac/dev.c and rate-control files. It then failed at
+pre-MLO mac80211 differences: vif.cfg, sta.deflink, bss_info_changed u64 vs u32,
+conf_tx link_id and missing ieee80211_handle_wake_tx_queue.
+Patch0002 adds versioned accessors/callback argument types from primary Linux
+headers: sta.deflink since5.19; vif.cfg and callback/link_id changes since6.0;
+default wake_tx_queue helper since6.2. Older kernels retain the existing direct
+.tx path. No incompatible function pointer casts or error suppression are used.
+Actual translation of this second patch is pending; no driver success is claimed.

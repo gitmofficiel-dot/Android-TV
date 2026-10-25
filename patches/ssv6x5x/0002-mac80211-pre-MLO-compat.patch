@@ -1,0 +1,191 @@
+diff --git a/smac/ampdu.c b/smac/ampdu.c
+index 27a995c..c8f0086 100644
+--- a/smac/ampdu.c
++++ b/smac/ampdu.c
+@@ -14,6 +14,7 @@
+  */
+ 
+ #include <linux/version.h>
++#include "ssv_mac80211_compat.h"
+ #include <ssv6200.h>
+ #include "dev.h"
+ #include "ap.h"
+@@ -990,7 +991,7 @@ static void ssv6200_ampdu_tx_state_stop_func (
+     u8 tid_no = skb_qos_ctl[0] & 0xf;
+     // Attempting to fix ht_cap access for Kernel 6.12 (MLO)
+     // Assuming 'deflink' is the correct path for non-MLO or default link access
+-    if ((sta->deflink.ht_cap.ht_supported == true)
++    if ((SSV_STA_HT_CAP(sta).ht_supported == true)
+         && (!!(sc->sh->cfg.hw_caps & SSV6200_HW_CAP_AMPDU_TX))) {
+         ieee80211_start_tx_ba_session(sta, tid_no, 0);
+         ampdu_db_log("start ampdu_tx(rc) : tid_no = %d\n", tid_no);
+diff --git a/smac/dev.c b/smac/dev.c
+index b6814c7..b4e1954 100644
+--- a/smac/dev.c
++++ b/smac/dev.c
+@@ -17,6 +17,7 @@
+ #include <linux/etherdevice.h>
+ #include <linux/delay.h>
+ #include <linux/version.h>
++#include "ssv_mac80211_compat.h"
+ #if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 15, 0)
+ #include <linux/timer.h>
+ #endif
+@@ -3598,7 +3599,7 @@ tx_mpdu:
+             if (sc->vif_info[i].vif != NULL) {
+                 vif = sc->vif_info[i].vif;
+                 if ((vif->type == NL80211_IFTYPE_STATION) || (vif->type == NL80211_IFTYPE_P2P_CLIENT)) {
+-                    if (vif->cfg.assoc)
++                    if (SSV_VIF_ASSOC(vif))
+                         assoc++;
+                     if (vif->p2p)
+                         p2p++;
+@@ -3616,7 +3617,7 @@ tx_mpdu:
+             if (sc->vif_info[i].vif != NULL) {
+                 vif = sc->vif_info[i].vif;
+                 if ((vif->type == NL80211_IFTYPE_STATION) || (vif->type == NL80211_IFTYPE_P2P_CLIENT)) {
+-                    if (vif->cfg.assoc)
++                    if (SSV_VIF_ASSOC(vif))
+                         assoc++;
+                 }
+             }
+@@ -3754,7 +3755,7 @@ out:
+     static void ssv6200_bss_info_changed(struct ieee80211_hw *hw,
+                                          struct ieee80211_vif *vif,
+                                          struct ieee80211_bss_conf *info,
+-                                         u64 changed) {
++                                         ssv_bss_changed_t changed) {
+         struct ssv_vif_priv_data *priv_vif = (struct ssv_vif_priv_data *)vif->drv_priv;
+         struct ssv_softc *sc = hw->priv;
+ #ifdef CONFIG_P2P_NOA
+@@ -3815,7 +3816,7 @@ out:
+             curchan = hw->conf.chandef.chan;
+             dev_dbg(sc->dev, "NL80211_IFTYPE_STATION!!\n");
+             if (changed & BSS_CHANGED_ASSOC) {
+-                sc->isAssoc = vif->cfg.assoc;
++                sc->isAssoc = SSV_VIF_ASSOC(vif);
+                 if(!sc->isAssoc) {
+                     sc->channel_center_freq = 0;
+                     sc->ps_aid = 0;
+@@ -3824,8 +3825,8 @@ out:
+ #endif
+                 } else {
+                     sc->channel_center_freq = curchan->center_freq;
+-                    dev_dbg(sc->dev, KERN_INFO "!!vif->cfg.aid = %d\n", vif->cfg.aid);
+-                    sc->ps_aid = vif->cfg.aid;
++                    dev_dbg(sc->dev, KERN_INFO "!!vif->cfg.aid = %d\n", SSV_VIF_AID(vif));
++                    sc->ps_aid = SSV_VIF_AID(vif);
+ #ifdef SSV_SUPPORT_USB_LPM
+                     SSV_SET_USB_LPM(sc, 0);
+ #endif
+@@ -4301,7 +4302,7 @@ out:
+         return 0;
+     }
+ static int ssv6200_conf_tx(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
+-                          unsigned int link_id, u16 queue,
++                          SSV_CONF_TX_LINK_ARG u16 queue,
+                           const struct ieee80211_tx_queue_params *params)
+ {
+         struct ssv_softc *sc = hw->priv;
+@@ -4539,7 +4540,9 @@ out:
+         .suspend = ssv6xxx_suspend,
+         .resume = ssv6xxx_resume,
+ #endif
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 2, 0)
+         .wake_tx_queue = ieee80211_handle_wake_tx_queue,
++#endif
+         //.wake_tx_queue = NULL,
+         /* Use mac80211 emulation for single-channel hardware */
+ #if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 11, 0)
+@@ -5731,7 +5734,7 @@ out:
+                 if (sc->vif_info[i].vif != NULL) {
+                     vif = sc->vif_info[i].vif;
+                     if ((vif->type == NL80211_IFTYPE_STATION) || (vif->type == NL80211_IFTYPE_P2P_CLIENT)) {
+-                        if (vif->cfg.assoc)
++                        if (SSV_VIF_ASSOC(vif))
+                             assoc++;
+                         if (vif->p2p)
+                             p2p++;
+diff --git a/smac/ssv_mac80211_compat.h b/smac/ssv_mac80211_compat.h
+new file mode 100644
+index 0000000..d92a871
+--- /dev/null
++++ b/smac/ssv_mac80211_compat.h
+@@ -0,0 +1,24 @@
++/* SPDX-License-Identifier: MIT */
++#ifndef SSV_MAC80211_COMPAT_H
++#define SSV_MAC80211_COMPAT_H
++#include <linux/version.h>
++#include <linux/types.h>
++
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(5, 19, 0)
++#define SSV_STA_HT_CAP(sta) ((sta)->deflink.ht_cap)
++#else
++#define SSV_STA_HT_CAP(sta) ((sta)->ht_cap)
++#endif
++
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 0, 0)
++#define SSV_VIF_ASSOC(vif) ((vif)->cfg.assoc)
++#define SSV_VIF_AID(vif) ((vif)->cfg.aid)
++#define SSV_CONF_TX_LINK_ARG unsigned int link_id,
++typedef u64 ssv_bss_changed_t;
++#else
++#define SSV_VIF_ASSOC(vif) ((vif)->bss_conf.assoc)
++#define SSV_VIF_AID(vif) ((vif)->bss_conf.aid)
++#define SSV_CONF_TX_LINK_ARG
++typedef u32 ssv_bss_changed_t;
++#endif
++#endif
+diff --git a/smac/ssv_rc_minstrel.c b/smac/ssv_rc_minstrel.c
+index 80aa8f9..eab978e 100644
+--- a/smac/ssv_rc_minstrel.c
++++ b/smac/ssv_rc_minstrel.c
+@@ -15,6 +15,7 @@
+ 
+ #include <linux/kernel.h>
+ #include <linux/version.h>
++#include "ssv_mac80211_compat.h"
+ #include <linux/debugfs.h>
+ #include <ssv6200.h>
+ #include "dev.h"
+@@ -396,7 +397,7 @@ static void ssv6xxx_rate_update_minstrel_type(void *priv, struct ieee80211_suppo
+     bool supportted_11m = false;
+     minstrel_sta_priv->sta = sta;
+     /* ht_cap moved to sta->deflink in kernel >= 5.19 (non-MLO default link) */
+-    minstrel_sta_priv->is_ht = sta->deflink.ht_cap.ht_supported;
++    minstrel_sta_priv->is_ht = SSV_STA_HT_CAP(sta).ht_supported;
+     if (minstrel_sta_priv->is_ht) {
+         ssv_minstrel_ht_update_caps(priv, sband, sta, priv_sta, oper_chan_type);
+         return;
+diff --git a/smac/ssv_rc_minstrel_ht.c b/smac/ssv_rc_minstrel_ht.c
+index 12b8e79..678a470 100644
+--- a/smac/ssv_rc_minstrel_ht.c
++++ b/smac/ssv_rc_minstrel_ht.c
+@@ -15,6 +15,7 @@
+ 
+ #include <linux/kernel.h>
+ #include <linux/version.h>
++#include "ssv_mac80211_compat.h"
+ #include <linux/types.h>
+ #include <linux/random.h>
+ #include <linux/math64.h>
+@@ -643,7 +644,7 @@ void ssv_minstrel_ht_tx_status(struct ssv_softc *sc, void *rc_info,
+     int i = 0;
+     if (!minstrel_sta_priv || !minstrel_sta_priv->is_ht)
+         return;
+-    sta_cap = minstrel_sta_priv->sta->deflink.ht_cap.cap; /* deflink for kernel >= 5.19 */
++    sta_cap = SSV_STA_HT_CAP(minstrel_sta_priv->sta).cap; /* deflink for kernel >= 5.19 */
+     mhs = &minstrel_sta_priv->ht;
+     mhs->ampdu_packets++;
+     mhs->ampdu_len += ampdu_len;
+@@ -794,8 +795,8 @@ void ssv_minstrel_ht_update_caps(void *priv, struct ieee80211_supported_band *sb
+     struct ssv_minstrel_priv *smp = (struct ssv_minstrel_priv *)sc->rc;
+     struct ssv_minstrel_sta_priv *sta_priv = priv_sta;
+     struct ssv_minstrel_ht_sta *mhs = &sta_priv->ht;
+-    struct ieee80211_mcs_info *mcs = &sta->deflink.ht_cap.mcs; /* deflink for kernel >= 5.19 */
+-    u16 sta_cap = sta->deflink.ht_cap.cap;
++    struct ieee80211_mcs_info *mcs = &SSV_STA_HT_CAP(sta).mcs; /* deflink for kernel >= 5.19 */
++    u16 sta_cap = SSV_STA_HT_CAP(sta).cap;
+     int ack_dur;
+     int stbc;
+     bool is_sgi = false;

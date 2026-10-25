@@ -49,3 +49,11 @@ headers: sta.deflink since5.19; vif.cfg and callback/link_id changes since6.0;
 default wake_tx_queue helper since6.2. Older kernels retain the existing direct
 .tx path. No incompatible function pointer casts or error suppression are used.
 Actual translation of this second patch is pending; no driver success is claimed.
+
+## Current checkpoint
+Patch0002 was committed as4fda4d5. Its host validation run40216909769 passed;
+the suite contains17 tests, including6 compatibility contract tests.
+Actual module retry: https://github.com/gitmofficiel-dot/Android-TV/actions/runs/40216909746
+At this checkpoint the runner is still installing build tools, so the patched
+module has not yet been compiled in that run. This is not a successful module
+build and does not change the no-firmware/no-device-boot status above.

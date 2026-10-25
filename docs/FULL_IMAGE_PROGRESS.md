@@ -36,3 +36,22 @@ mean an Android build can fit or has happened.
 Stock FCM4 vendor does not match the documented Android16 supported FCM range.
 Vendor/kernel/HAL migration and validated recovery remain prerequisites.
 Google TV branding/services are not claimed; direct target remains AOSP TV16.
+
+## Boot-chain evidence in the full disk
+The reserved region before named partitions contains eGON.BT0 headers at8192
+and262144, and sunxi-package headers at12582912 and16793600 bytes.
+Both packages contain the version string U-Boot2018.05, dated2024-04-09.
+Embedded main DTBs at13725696 and17936384 are byte-identical (139912 bytes,
+SHA256 a5e9f46fe9df8bab9382a3a699e4517c4b56a3e893a2e6d0233567ee449df0aa).
+These observations do not verify the package checksums or device boot selection.
+The DT includes numerous alternate DRAM profiles; their presence does not establish
+which profile was used for memory training. Keep the original boot chain intact.
+The full user-area disk contains these reserved boot-chain copies, but is not a
+capture of the separate eMMC hardware boot0/boot1 regions or RPMB.
+
+## Reference build attempts
+Actions run40206676417 configured the reference kernel successfully, then failed
+because the vendor NAND Makefile requires KERNEL_SRC/LICHEE_KDIR even when entered
+from normal Kbuild. Its own source explicitly accepts KERNEL_SRC as a fallback.
+The build script now passes that source path and preserves provenance before
+compilation. Run40206920820 is the retry; no success is claimed until it finishes.

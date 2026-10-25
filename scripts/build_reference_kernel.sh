@@ -19,8 +19,8 @@ git -C "$src_root" -c protocol.version=2 fetch --depth=1 --filter=blob:none orig
 git -C "$src_root" checkout --detach FETCH_HEAD
 test "$(git -C "$src_root" rev-parse HEAD)" = "$revision"
 kernel="$src_root/longan/kernel/linux-5.4"
-make -C "$kernel" O="$out_root" ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- sun50iw9p1smp_h618_android_defconfig
-make -C "$kernel" O="$out_root" ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- -j2 Image modules
 printf 'source=%s\nrevision=%s\nrole=H618-reference-only-not-LP3-firmware\n' "$repo" "$revision" > "$out_root/SOURCE.txt"
 aarch64-linux-gnu-gcc --version > "$out_root/compiler-version.txt"
+make -C "$kernel" O="$out_root" ARCH=arm64 KERNEL_SRC="$kernel" INSTALL_MOD_PATH="$out_root/modules-staging" CROSS_COMPILE=aarch64-linux-gnu- sun50iw9p1smp_h618_android_defconfig
+make -C "$kernel" O="$out_root" ARCH=arm64 KERNEL_SRC="$kernel" INSTALL_MOD_PATH="$out_root/modules-staging" CROSS_COMPILE=aarch64-linux-gnu- -j2 Image modules
 sha256sum "$out_root/arch/arm64/boot/Image" > "$out_root/Image.sha256"

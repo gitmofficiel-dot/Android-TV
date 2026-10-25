@@ -26,6 +26,7 @@ jobs:
         with:
           name: H618-reference-build-diagnostics-NOT-FIRMWARE
           if-no-files-found: warn
+          include-hidden-files: true
           path: |
             ${{ runner.temp }}/h618-output/.config
             ${{ runner.temp }}/h618-output/SOURCE.txt

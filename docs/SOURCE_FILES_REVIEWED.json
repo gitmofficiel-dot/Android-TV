@@ -1,0 +1,23 @@
+[
+  {
+    "repository": "BPI-SINOVOIP/BPI-H618-Android12",
+    "path": "longan/kernel/linux-5.4/Makefile",
+    "blob_sha": "b7eb24d7b0b2f7aa8f4b9767f1715b4eea7a842b",
+    "url": "https://github.com/BPI-SINOVOIP/BPI-H618-Android12/blob/master/longan/kernel/linux-5.4/Makefile",
+    "note": "Inspected file only; blob SHA is not a repository commit pin. Full source and oversize files not downloaded."
+  },
+  {
+    "repository": "BPI-SINOVOIP/BPI-H618-Android12",
+    "path": "longan/device/config/chips/h618/configs/m4zero/linux-5.4/board.dts",
+    "blob_sha": "b0ea2c90fe58205b531d7a507c0ad21170c19ba1",
+    "url": "https://github.com/BPI-SINOVOIP/BPI-H618-Android12/blob/master/longan/device/config/chips/h618/configs/m4zero/linux-5.4/board.dts",
+    "note": "Inspected file only; blob SHA is not a repository commit pin. Full source and oversize files not downloaded."
+  },
+  {
+    "repository": "BPI-SINOVOIP/BPI-H618-Android12",
+    "path": "longan/kernel/linux-5.4/drivers/mfd/axp2101.c",
+    "blob_sha": "a86ae6f36a298317fb459996538756c70c85b1fa",
+    "url": "https://github.com/BPI-SINOVOIP/BPI-H618-Android12/blob/master/longan/kernel/linux-5.4/drivers/mfd/axp2101.c",
+    "note": "Inspected file only; blob SHA is not a repository commit pin. Full source and oversize files not downloaded."
+  }
+]

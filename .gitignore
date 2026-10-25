@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+*.img
+*.dtb
+*.so
+*.ko
+*.pem
+*.key
+*.tar.gz
+H20-evidence-*/
+H20-complete-*/
+upload/
+stock-images/
+vendor-stock/
+out/

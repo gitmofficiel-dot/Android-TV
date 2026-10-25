@@ -1,0 +1,23 @@
+name: Validate port components
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  host-tests:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check read-only collector syntax
+        run: bash -n scripts/COLLECT_READ_ONLY.sh
+      - name: Test GPT and FDT readers
+        run: python3 -m unittest discover -s tests -v
+      - name: Build and test IR decoder on host
+        run: |
+          cc -std=c11 -Wall -Wextra -Werror -pedantic remote/ir_decode.c tests/test_ir.c -o /tmp/h20-test-ir
+          /tmp/h20-test-ir
+      - name: Validate generated board evidence
+        run: python3 -m json.tool device/lp3/stock-board-facts.json > /dev/null

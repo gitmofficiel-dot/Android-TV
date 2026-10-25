@@ -1,0 +1,7 @@
+# For a future daemon emitting STANDARD Linux codes, not stock sunxi-ir-uinput.
+key 103 DPAD_UP
+key 108 DPAD_DOWN
+key 105 DPAD_LEFT
+key 106 DPAD_RIGHT
+key 28 DPAD_CENTER
+key 158 BACK

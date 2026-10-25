@@ -1,0 +1,16 @@
+--- a/smac/ap.c
++++ b/smac/ap.c
+@@ -262,8 +262,13 @@
+         return;
+     }
+     do {
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(6, 0, 0)
+         skb = ieee80211_beacon_get_tim(hw, vif,
+                                        &tim_offset, &tim_length, 0);
++#else
++        skb = ieee80211_beacon_get_tim(hw, vif,
++                                       &tim_offset, &tim_length);
++#endif
+         if(skb == NULL) {
+             printk("[Error]........skb is NULL\n");
+             break;

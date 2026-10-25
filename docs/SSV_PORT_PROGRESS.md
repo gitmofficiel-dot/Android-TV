@@ -57,3 +57,13 @@ Actual module retry: https://github.com/gitmofficiel-dot/Android-TV/actions/runs
 At this checkpoint the runner is still installing build tools, so the patched
 module has not yet been compiled in that run. This is not a successful module
 build and does not change the no-firmware/no-device-boot status above.
+
+## Beacon API correction
+Run40216909746 restored the completed kernel cache and compiled past prior procfs
+and mac80211 field/callback errors. It failed in smac/ap.c because kernel5.4 uses
+4 arguments for ieee80211_beacon_get_tim; upstream supplied the6.0+ link_id fifth
+argument. Primary Linux5.19 and6.0 headers confirm this boundary.
+Patch0003 selects the proper call signature at6.0 without a function-pointer cast
+or a warning override. Patch application and script syntax passed locally;17
+existing host tests and the IR test passed. Actual module rebuild is pending.
+No full Android12/16 firmware image has been generated or boot-tested.

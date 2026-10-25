@@ -24,3 +24,17 @@ kernel source/config, Module.symvers, kernel modules and userspace hardware ABI.
 Even successful compilation does not prove SDIO/RF/firmware/Android integration.
 
 No complete H20 Android12/16 image has been produced, installed or boot-tested.
+
+## Boot packing size experiment
+The donor asset was downloaded again and its pinned SHA256 and XZ stream test
+passed. Its boot/vendor_boot entries were read from the bounded IMAGEWTY table.
+Legacy-LZ4 ramdisk blocks were decoded with liblz4 into27287808 bytes of newc CPIO.
+GZIP9 round-trip preserved all CPIO bytes, but kernel+generic ramdisk alone still
+needed35090432 bytes at2048-byte alignment, exceeding32MiB.
+A second in-memory experiment omitted only system/bin/{fastbootd,recovery,
+update_engine_sideload}, retaining ADB/init/shared libraries. Its gzip output was
+8976219 bytes; the hypothetical aligned boot payload was32681984 bytes, before
+vendor ramdisk, DTB and AVB. This is a potential size strategy, not an approved
+ramdisk change. Recovery-service dependencies, boot mode, header/AVB acceptance
+and actual board settings remain unresolved. No boot.img was repacked or signed.
+See RAMDISK_SIZE_EXPERIMENT.json. Removing binaries is not proof of compatibility.

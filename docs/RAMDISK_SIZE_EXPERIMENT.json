@@ -1,0 +1,50 @@
+{
+  "donor_release": "well83/t95-h616-android12 axp313-final",
+  "compressed_donor_sha256": "de6d272e10297fbe6332734845966da5b92bc660c92bcff318cb17552aa72126",
+  "xz_stream_test": "passed",
+  "original_ramdisk": {
+    "purpose": "Packing-size experiment only; no boot image generated",
+    "donor_kernel_raw": 23701512,
+    "donor_ramdisk_lz4": 13229968,
+    "donor_ramdisk_cpio": 27287808,
+    "recompressed_ramdisk_gzip": 11382918,
+    "hypothetical_v2_kernel_plus_generic_ramdisk": 35090432,
+    "stock_boot_capacity": 33554432,
+    "notes": [
+      "Estimate excludes vendor ramdisk, DTB, AVB metadata and bootloader support.",
+      "Recompression round-trip matched original cpio byte-for-byte.",
+      "Existing donor signatures cannot be reused after changing ramdisk or header."
+    ]
+  },
+  "normal_boot_experiment": {
+    "purpose": "Offline size experiment, not a selected or packaged ramdisk",
+    "excluded_recovery_executables": [
+      {
+        "path": "system/bin/fastbootd",
+        "size": 1240088
+      },
+      {
+        "path": "system/bin/recovery",
+        "size": 1855168
+      },
+      {
+        "path": "system/bin/update_engine_sideload",
+        "size": 2211640
+      }
+    ],
+    "cpio_size": 21980348,
+    "gzip_size": 8976219,
+    "kept_adbd": true,
+    "hypothetical_boot_v2_payload_without_dtb_avb": 32681984,
+    "capacity": 33554432,
+    "not_proven": [
+      "Bootloader header/AVB compatibility",
+      "Recovery-mode service dependencies",
+      "Vendor ramdisk merge and fstabs",
+      "Actual target kernel config/GZIP support and H20 hardware boot"
+    ]
+  },
+  "full_firmware_created": false,
+  "stock_image_modified": false,
+  "device_boot_tested": false
+}

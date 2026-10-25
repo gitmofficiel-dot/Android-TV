@@ -1,0 +1,428 @@
+{
+  "raw_size": 7818182656,
+  "raw_sha256": "dd2db326486d188f94f4de1a7710049377ab645f122ee3bffc2ade7f442db293",
+  "backup_gpt_header_crc_ok": true,
+  "backup_gpt_table_crc_ok": true,
+  "gpt_tables_identical": true,
+  "stock_boot_hashes": {
+    "boot": "070cecbf07a61f407b7aa760985a5b41c2d366fe4fc31bd196d5ded96868afb8",
+    "recovery": "222022949678583fdc3092ef4a65829ab63b4f5ad1054b61f7fad36d90575ef9"
+  },
+  "super": {
+    "geometry": {
+      "max_size": 65536,
+      "slots": 2,
+      "logical_block_size": 4096
+    },
+    "geometry_copies_match": true,
+    "metadata_copies": [
+      {
+        "slot": 0,
+        "backup": false,
+        "version": "10.0",
+        "checksums_ok": true,
+        "partitions": [
+          {
+            "name": "system",
+            "attributes": 1,
+            "size_bytes": 1834414080,
+            "group": "sb",
+            "extents": [
+              {
+                "sectors": 3582840,
+                "type": 0,
+                "start": 2048
+              }
+            ]
+          },
+          {
+            "name": "vendor",
+            "attributes": 1,
+            "size_bytes": 206163968,
+            "group": "sb",
+            "extents": [
+              {
+                "sectors": 402664,
+                "type": 0,
+                "start": 3586048
+              }
+            ]
+          },
+          {
+            "name": "product",
+            "attributes": 1,
+            "size_bytes": 57372672,
+            "group": "sb",
+            "extents": [
+              {
+                "sectors": 112056,
+                "type": 0,
+                "start": 3989504
+              }
+            ]
+          }
+        ],
+        "groups": [
+          {
+            "name": "default",
+            "max_size": 0
+          },
+          {
+            "name": "sb",
+            "max_size": 2608857088
+          }
+        ]
+      },
+      {
+        "slot": 1,
+        "backup": false,
+        "version": "10.0",
+        "checksums_ok": true,
+        "partitions": [
+          {
+            "name": "system",
+            "attributes": 1,
+            "size_bytes": 1834414080,
+            "group": "sb",
+            "extents": [
+              {
+                "sectors": 3582840,
+                "type": 0,
+                "start": 2048
+              }
+            ]
+          },
+          {
+            "name": "vendor",
+            "attributes": 1,
+            "size_bytes": 206163968,
+            "group": "sb",
+            "extents": [
+              {
+                "sectors": 402664,
+                "type": 0,
+                "start": 3586048
+              }
+            ]
+          },
+          {
+            "name": "product",
+            "attributes": 1,
+            "size_bytes": 57372672,
+            "group": "sb",
+            "extents": [
+              {
+                "sectors": 112056,
+                "type": 0,
+                "start": 3989504
+              }
+            ]
+          }
+        ],
+        "groups": [
+          {
+            "name": "default",
+            "max_size": 0
+          },
+          {
+            "name": "sb",
+            "max_size": 2608857088
+          }
+        ]
+      },
+      {
+        "slot": 0,
+        "backup": true,
+        "version": "10.0",
+        "checksums_ok": true,
+        "partitions": [
+          {
+            "name": "system",
+            "attributes": 1,
+            "size_bytes": 1834414080,
+            "group": "sb",
+            "extents": [
+              {
+                "sectors": 3582840,
+                "type": 0,
+                "start": 2048
+              }
+            ]
+          },
+          {
+            "name": "vendor",
+            "attributes": 1,
+            "size_bytes": 206163968,
+            "group": "sb",
+            "extents": [
+              {
+                "sectors": 402664,
+                "type": 0,
+                "start": 3586048
+              }
+            ]
+          },
+          {
+            "name": "product",
+            "attributes": 1,
+            "size_bytes": 57372672,
+            "group": "sb",
+            "extents": [
+              {
+                "sectors": 112056,
+                "type": 0,
+                "start": 3989504
+              }
+            ]
+          }
+        ],
+        "groups": [
+          {
+            "name": "default",
+            "max_size": 0
+          },
+          {
+            "name": "sb",
+            "max_size": 2608857088
+          }
+        ]
+      },
+      {
+        "slot": 1,
+        "backup": true,
+        "version": "10.0",
+        "checksums_ok": true,
+        "partitions": [
+          {
+            "name": "system",
+            "attributes": 1,
+            "size_bytes": 1834414080,
+            "group": "sb",
+            "extents": [
+              {
+                "sectors": 3582840,
+                "type": 0,
+                "start": 2048
+              }
+            ]
+          },
+          {
+            "name": "vendor",
+            "attributes": 1,
+            "size_bytes": 206163968,
+            "group": "sb",
+            "extents": [
+              {
+                "sectors": 402664,
+                "type": 0,
+                "start": 3586048
+              }
+            ]
+          },
+          {
+            "name": "product",
+            "attributes": 1,
+            "size_bytes": 57372672,
+            "group": "sb",
+            "extents": [
+              {
+                "sectors": 112056,
+                "type": 0,
+                "start": 3989504
+              }
+            ]
+          }
+        ],
+        "groups": [
+          {
+            "name": "default",
+            "max_size": 0
+          },
+          {
+            "name": "sb",
+            "max_size": 2608857088
+          }
+        ]
+      }
+    ]
+  },
+  "gpt_partitions": [
+    {
+      "index": 1,
+      "name": "bootloader",
+      "start_lba": 73728,
+      "end_lba": 139263,
+      "bounds_ok": true,
+      "overlap": false
+    },
+    {
+      "index": 2,
+      "name": "env",
+      "start_lba": 139264,
+      "end_lba": 172031,
+      "bounds_ok": true,
+      "overlap": false
+    },
+    {
+      "index": 3,
+      "name": "boot",
+      "start_lba": 172032,
+      "end_lba": 237567,
+      "bounds_ok": true,
+      "overlap": false
+    },
+    {
+      "index": 4,
+      "name": "super",
+      "start_lba": 237568,
+      "end_lba": 5349375,
+      "bounds_ok": true,
+      "overlap": false
+    },
+    {
+      "index": 5,
+      "name": "misc",
+      "start_lba": 5349376,
+      "end_lba": 5382143,
+      "bounds_ok": true,
+      "overlap": false
+    },
+    {
+      "index": 6,
+      "name": "recovery",
+      "start_lba": 5382144,
+      "end_lba": 5447679,
+      "bounds_ok": true,
+      "overlap": false
+    },
+    {
+      "index": 7,
+      "name": "cache",
+      "start_lba": 5447680,
+      "end_lba": 8069119,
+      "bounds_ok": true,
+      "overlap": false
+    },
+    {
+      "index": 8,
+      "name": "vbmeta",
+      "start_lba": 8069120,
+      "end_lba": 8101887,
+      "bounds_ok": true,
+      "overlap": false
+    },
+    {
+      "index": 9,
+      "name": "vbmeta_system",
+      "start_lba": 8101888,
+      "end_lba": 8134655,
+      "bounds_ok": true,
+      "overlap": false
+    },
+    {
+      "index": 10,
+      "name": "vbmeta_vendor",
+      "start_lba": 8134656,
+      "end_lba": 8167423,
+      "bounds_ok": true,
+      "overlap": false
+    },
+    {
+      "index": 11,
+      "name": "metadata",
+      "start_lba": 8167424,
+      "end_lba": 8200191,
+      "bounds_ok": true,
+      "overlap": false
+    },
+    {
+      "index": 12,
+      "name": "private",
+      "start_lba": 8200192,
+      "end_lba": 8232959,
+      "bounds_ok": true,
+      "overlap": false
+    },
+    {
+      "index": 13,
+      "name": "frp",
+      "start_lba": 8232960,
+      "end_lba": 8233983,
+      "bounds_ok": true,
+      "overlap": false
+    },
+    {
+      "index": 14,
+      "name": "empty",
+      "start_lba": 8233984,
+      "end_lba": 8265727,
+      "bounds_ok": true,
+      "overlap": false
+    },
+    {
+      "index": 15,
+      "name": "media_data",
+      "start_lba": 8265728,
+      "end_lba": 8298495,
+      "bounds_ok": true,
+      "overlap": false
+    },
+    {
+      "index": 16,
+      "name": "Reserve0",
+      "start_lba": 8298496,
+      "end_lba": 8331263,
+      "bounds_ok": true,
+      "overlap": false
+    },
+    {
+      "index": 17,
+      "name": "UDISK",
+      "start_lba": 8331264,
+      "end_lba": 15269854,
+      "bounds_ok": true,
+      "overlap": false
+    }
+  ],
+  "filesystems": {
+    "system": {
+      "e2fsck_readonly_exit": 0,
+      "size_bytes": 1834414080
+    },
+    "vendor": {
+      "e2fsck_readonly_exit": 0,
+      "size_bytes": 206163968
+    },
+    "product": {
+      "e2fsck_readonly_exit": 0,
+      "size_bytes": 57372672
+    }
+  },
+  "limitations": [
+    "Original device/RPMB/boot0/boot1 not accessed",
+    "No restoration or hardware boot tested",
+    "Only system/vendor/product filesystem checks; no userdata inspection",
+    "No Android16 OS build or certification",
+    "AVB verification establishes consistency with embedded keys only, not trusted manufacturer identity or bootloader acceptance"
+  ],
+  "avb": {
+    "verified_with_embedded_keys": true,
+    "root_of_trust_authenticated": false,
+    "device_rollback_state_checked": false,
+    "chains": [
+      {
+        "partition": "vbmeta_system",
+        "parent_key_matches_child": true,
+        "rollback_location": 1
+      },
+      {
+        "partition": "vbmeta_vendor",
+        "parent_key_matches_child": true,
+        "rollback_location": 2
+      }
+    ],
+    "tool": "AOSP avbtool 1.3.0",
+    "tool_source": "https://android.googlesource.com/platform/external/avb/+/refs/heads/main/avbtool.py",
+    "tool_sha256": "e5a664a38db623da00f080219bc0ee60a640a9dc4a872803616fae4938ac749b"
+  }
+}

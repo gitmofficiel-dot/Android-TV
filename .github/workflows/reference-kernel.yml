@@ -1,0 +1,38 @@
+name: Build reference H618 kernel (not LP3 firmware)
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/reference-kernel.yml
+      - scripts/build_reference_kernel.sh
+permissions:
+  contents: read
+jobs:
+  reference-kernel:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install kernel build tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu make bc bison flex libssl-dev libelf-dev
+      - name: Build immutable BSP reference, without packing or flashing
+        run: bash scripts/build_reference_kernel.sh "$RUNNER_TEMP/h618-source" "$RUNNER_TEMP/h618-output"
+      - name: Preserve config and provenance even on a failed build
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: H618-reference-build-diagnostics-NOT-FIRMWARE
+          if-no-files-found: warn
+          path: |
+            ${{ runner.temp }}/h618-output/.config
+            ${{ runner.temp }}/h618-output/SOURCE.txt
+            ${{ runner.temp }}/h618-output/compiler-version.txt
+            ${{ runner.temp }}/h618-output/Image.sha256
+      - name: Upload successful reference kernel
+        uses: actions/upload-artifact@v4
+        with:
+          name: H618-reference-kernel-NOT-LP3-FIRMWARE
+          path: ${{ runner.temp }}/h618-output/arch/arm64/boot/Image

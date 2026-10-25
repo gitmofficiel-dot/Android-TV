@@ -1,0 +1,16 @@
+// Original FE01 component only. This file does not define a complete TV product.
+cc_library_static {
+    name: "libgitm_h20_ir_decode",
+    host_supported: true,
+    vendor_available: true,
+    srcs: ["remote/ir_decode.c"],
+    export_include_dirs: ["remote"],
+    cflags: ["-Wall", "-Wextra", "-Werror"],
+}
+cc_test_host {
+    name: "gitm_h20_ir_decode_test",
+    srcs: ["tests/test_ir.c"],
+    static_libs: ["libgitm_h20_ir_decode"],
+    cflags: ["-Wall", "-Wextra", "-Werror"],
+    gtest: false,
+}

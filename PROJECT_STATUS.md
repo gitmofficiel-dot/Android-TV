@@ -1,14 +1,18 @@
 # GITM H20 Pro Android TV
 Target: AOSP Android TV16 for PCB H20-pro-lp3-230916.
-Status: pre-port engineering. No Android16 image built or booted.
+Status: hardware port development. No Android16 firmware built or booted.
 
-Implemented: tested offline GPT/FDT evidence tooling, FE01 IR decode component,
-board evidence inventory, source review and hardware acceptance plan.
-GitHub Actions validates these components only; it does not build Android OS.
+Completed: full release download/hash/decompression; both GPT copies checked;
+all four super metadata copies validated; logical partitions extracted and
+read-only system/vendor/product filesystem checks passed; FE01 decoder and
+offline readers tested. See docs/FULL_IMAGE_PROGRESS.md and the JSON audit.
 
-Blocked full build: complete version-pinned BSP and target vendor migration,
-compatible graphics/media/Wi-Fi source/blobs, adequate build host, verified
-recovery. Current vendor FCM4 is outside Android16 documented supported levels.
+Build automation: host tests run on GitHub. A separate H618 reference kernel
+build tests an immutable BSP revision; it is NOT LP3 firmware or Android16.
+Its success/failure must be read from Actions, not inferred from this document.
+Soong definitions for FE01 exist but have not been compiled with AOSP.
 
-Private stock dumps and proprietary binaries must remain outside this repository.
-No flashing without device-specific validation and explicit user approval.
+Remaining: real LP3 board/kernel/vendor migration, target HAL/FCM, GPU/media/SSV
+compatibility, suitable full AOSP build host, hardware boot and recovery tests.
+Do not remove VINTF/AVB checks merely to make an incompatible image appear valid.
+No flashing without device-specific validation and explicit approval.

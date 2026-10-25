@@ -12,7 +12,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Check read-only collector syntax
-        run: bash -n scripts/COLLECT_READ_ONLY.sh
+        run: |
+          bash -n scripts/COLLECT_READ_ONLY.sh
+          bash -n scripts/build_reference_kernel.sh
       - name: Test GPT and FDT readers
         run: python3 -m unittest discover -s tests -v
       - name: Build and test IR decoder on host

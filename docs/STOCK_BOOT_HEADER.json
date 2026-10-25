@@ -1,0 +1,26 @@
+{
+  "source": "user supplied stock boot.img",
+  "sha256": "070cecbf07a61f407b7aa760985a5b41c2d366fe4fc31bd196d5ded96868afb8",
+  "file_size": 33554432,
+  "header_version": 2,
+  "header_size": 1660,
+  "page_size": 2048,
+  "kernel_size": 18806792,
+  "kernel_address": "0x40080000",
+  "ramdisk_size": 771329,
+  "ramdisk_address": "0x43000000",
+  "tags_address": "0x40000100",
+  "dtb_size": 137860,
+  "dtb_address": "0x44000000",
+  "avb_footer": {
+    "magic": "AVBf",
+    "original_image_size": 19722240,
+    "vbmeta_offset": 19722240,
+    "vbmeta_size": 576
+  },
+  "limitations": [
+    "Header parsing only; no new signature verification in this step.",
+    "This stock boot image is Android10, not an Android12/16 port.",
+    "Do not transplant these physical addresses into another kernel without checking its boot protocol."
+  ]
+}

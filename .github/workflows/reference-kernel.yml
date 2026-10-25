@@ -7,6 +7,7 @@ on:
       - .github/workflows/reference-kernel.yml
       - scripts/build_reference_kernel.sh
       - scripts/build_ssv_candidate.sh
+      - patches/ssv6x5x/**
 permissions:
   contents: read
 jobs:
@@ -19,9 +20,29 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y gcc-aarch64-linux-gnu binutils-aarch64-linux-gnu make bc bison flex libssl-dev libelf-dev
+      - name: Identify compiler for kernel cache
+        id: compiler
+        run: echo "version=$(aarch64-linux-gnu-gcc -dumpfullversion)" >> "$GITHUB_OUTPUT"
+      - name: Restore completed reference kernel workspace
+        id: kernel-cache
+        uses: actions/cache/restore@v4
+        with:
+          key: h618-reference-v1-${{ runner.os }}-${{ runner.arch }}-${{ steps.compiler.outputs.version }}-${{ hashFiles('scripts/build_reference_kernel.sh') }}
+          path: |
+            ${{ runner.temp }}/h618-source
+            ${{ runner.temp }}/h618-output
       - name: Build immutable BSP reference, without packing or flashing
         id: kernel
+        if: steps.kernel-cache.outputs.cache-hit != 'true'
         run: bash scripts/build_reference_kernel.sh "$RUNNER_TEMP/h618-source" "$RUNNER_TEMP/h618-output"
+      - name: Save completed reference kernel before driver experiment
+        if: steps.kernel-cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          key: ${{ steps.kernel-cache.outputs.cache-primary-key }}
+          path: |
+            ${{ runner.temp }}/h618-source
+            ${{ runner.temp }}/h618-output
       - name: Compile SSV source against the completed reference kernel
         id: ssv
         run: bash scripts/build_ssv_candidate.sh "$RUNNER_TEMP/h618-source/longan/kernel/linux-5.4" "$RUNNER_TEMP/h618-output" "$RUNNER_TEMP/ssv-source" "$RUNNER_TEMP/ssv-diagnostics"
@@ -45,7 +66,7 @@ jobs:
             ${{ runner.temp }}/h618-output/compiler-version.txt
             ${{ runner.temp }}/h618-output/Image.sha256
       - name: Upload successful reference kernel
-        if: ${{ always() && steps.kernel.outcome == 'success' }}
+        if: ${{ always() && (steps.kernel.outcome == 'success' || steps.kernel-cache.outputs.cache-hit == 'true') }}
         uses: actions/upload-artifact@v4
         with:
           name: H618-reference-kernel-NOT-LP3-FIRMWARE

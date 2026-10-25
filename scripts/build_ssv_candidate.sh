@@ -5,8 +5,10 @@ kernel=${1:?Kernel source path required}
 kernel_out=${2:?Matching completed kernel build output required}
 driver=${3:?New driver checkout directory required}
 diagnostics=${4:?Diagnostics directory required}
+project_root=$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)
 kernel=$(realpath "$kernel")
 kernel_out=$(realpath "$kernel_out")
+test "$(git -C "$kernel/../../.." rev-parse HEAD)" = 250eabfc529518b7f26432663ed0a867ab2f625d
 test -f "$kernel_out/Module.symvers"
 test -f "$kernel_out/include/generated/autoconf.h"
 grep -q '^CONFIG_ARM64=y$' "$kernel_out/.config"
@@ -23,6 +25,9 @@ git -C "$driver" remote add origin "$repo"
 git -C "$driver" fetch --depth 1 origin "$revision"
 git -C "$driver" checkout --detach FETCH_HEAD
 test "$(git -C "$driver" rev-parse HEAD)" = "$revision"
+git -C "$driver" apply --check "$project_root/patches/ssv6x5x/0001-procfs-5.4-compat.patch"
+git -C "$driver" apply "$project_root/patches/ssv6x5x/0001-procfs-5.4-compat.patch"
+sha256sum "$project_root/patches/ssv6x5x/0001-procfs-5.4-compat.patch" > "$diagnostics/SSV-PATCH.sha256"
 make -C "$kernel" O="$kernel_out" ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- \
   KERNEL_SRC="$kernel" INSTALL_MOD_PATH="$kernel_out/modules-staging" \
   M="$driver" -j2 modules 2>&1 | tee "$diagnostics/ssv-build.log"

@@ -1,0 +1,145 @@
+diff --git a/ssvdevice/ssv_proc_compat.h b/ssvdevice/ssv_proc_compat.h
+new file mode 100644
+index 0000000..b2f7187
+--- /dev/null
++++ b/ssvdevice/ssv_proc_compat.h
+@@ -0,0 +1,35 @@
++/* SPDX-License-Identifier: MIT */
++#ifndef SSV_PROC_COMPAT_H
++#define SSV_PROC_COMPAT_H
++#include <linux/version.h>
++#include <linux/fs.h>
++#include <linux/module.h>
++#include <linux/proc_fs.h>
++
++#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 6, 0)
++#define SSV_PROC_OPS struct file_operations
++#define SSV_PROC_OWNER .owner = THIS_MODULE,
++#define SSV_PROC_OPEN open
++#define SSV_PROC_READ read
++#define SSV_PROC_WRITE write
++#define SSV_PROC_LSEEK llseek
++#define SSV_PROC_RELEASE release
++#else
++#define SSV_PROC_OPS struct proc_ops
++#define SSV_PROC_OWNER
++#define SSV_PROC_OPEN proc_open
++#define SSV_PROC_READ proc_read
++#define SSV_PROC_WRITE proc_write
++#define SSV_PROC_LSEEK proc_lseek
++#define SSV_PROC_RELEASE proc_release
++#endif
++
++static inline void *ssv_pde_data(const struct inode *inode)
++{
++#if LINUX_VERSION_CODE < KERNEL_VERSION(5, 17, 0)
++    return PDE_DATA(inode);
++#else
++    return pde_data(inode);
++#endif
++}
++#endif
+diff --git a/ssvdevice/ssvdevice.c b/ssvdevice/ssvdevice.c
+index 18326da..035b0de 100644
+--- a/ssvdevice/ssvdevice.c
++++ b/ssvdevice/ssvdevice.c
+@@ -19,6 +19,7 @@
+ #include <linux/moduleparam.h>
+ #include <linux/slab.h>
+ #include <linux/proc_fs.h>
++#include "ssv_proc_compat.h"
+ #include <linux/uaccess.h>
+ #include <linux/errno.h>
+ #ifdef CONFIG_DEBUG_FS
+@@ -73,7 +74,7 @@ extern struct ssv6xxx_cfg tu_ssv_cfg;
+ static char *p2pStatus = "0";
+ static int ssv6xxx_p2p_open(struct inode *inode, struct file *filp)
+ {
+-    void *data = pde_data(inode);
++    void *data = ssv_pde_data(inode);
+     filp->private_data = data;
+     return 0;
+ }
+@@ -117,14 +118,15 @@ static ssize_t ssv6xxx_p2p_write(struct file *filp, const char __user *buffer,
+ out:
+     return retval;
+ }
+-static struct proc_ops ssv6xxx_p2p_fops = {
+-    .proc_open = ssv6xxx_p2p_open,
+-    .proc_read = ssv6xxx_p2p_read,
+-    .proc_write = ssv6xxx_p2p_write,
++static SSV_PROC_OPS ssv6xxx_p2p_fops = {
++    SSV_PROC_OWNER
++    .SSV_PROC_OPEN = ssv6xxx_p2p_open,
++    .SSV_PROC_READ = ssv6xxx_p2p_read,
++    .SSV_PROC_WRITE = ssv6xxx_p2p_write,
+ };
+ static int ssv6xxx_freq_open(struct inode *inode, struct file *filp)
+ {
+-    void *data = pde_data(inode);
++    void *data = ssv_pde_data(inode);
+     filp->private_data = data;
+     return 0;
+ }
+@@ -150,13 +152,14 @@ static ssize_t ssv6xxx_freq_read(struct file *filp, char __user *buffer,
+ out:
+     return retval;
+ }
+-static struct proc_ops ssv6xxx_freq_fops = {
+-    .proc_open = ssv6xxx_freq_open,
+-    .proc_read = ssv6xxx_freq_read,
++static SSV_PROC_OPS ssv6xxx_freq_fops = {
++    SSV_PROC_OWNER
++    .SSV_PROC_OPEN = ssv6xxx_freq_open,
++    .SSV_PROC_READ = ssv6xxx_freq_read,
+ };
+ static int ssv6xxx_cmd_file_open(struct inode *inode, struct file *filp)
+ {
+-    void *data = pde_data(inode);
++    void *data = ssv_pde_data(inode);
+     filp->private_data = data;
+     return 0;
+ }
+@@ -334,10 +337,11 @@ static void _import_default_cfg (char *tu_stacfgpath)
+     } while (read_len > 0);
+     filp_close(fp, NULL);
+ }
+-static struct proc_ops ssv6xxx_cmd_fops = {
+-    .proc_open = ssv6xxx_cmd_file_open,
+-    .proc_read = ssv6xxx_cmd_file_read,
+-    .proc_write = ssv6xxx_cmd_file_write,
++static SSV_PROC_OPS ssv6xxx_cmd_fops = {
++    SSV_PROC_OWNER
++    .SSV_PROC_OPEN = ssv6xxx_cmd_file_open,
++    .SSV_PROC_READ = ssv6xxx_cmd_file_read,
++    .SSV_PROC_WRITE = ssv6xxx_cmd_file_write,
+ };
+ static void *ssv6xxx_dbg_seq_start(struct seq_file *s, loff_t *pos)
+ {
+@@ -396,7 +400,7 @@ static int ssv6xxx_dbg_file_open(struct inode *inode, struct file *filp)
+ {
+     int ret = 0;
+     struct seq_file *sf;
+-    void *data = pde_data(inode);
++    void *data = ssv_pde_data(inode);
+     ret = seq_open(filp, &ssv6xxx_dbg_seq_fops);
+     if (!ret) {
+         sf = filp->private_data;
+@@ -404,11 +408,12 @@ static int ssv6xxx_dbg_file_open(struct inode *inode, struct file *filp)
+     }
+     return ret;
+ }
+-static struct proc_ops ssv6xxx_dbg_fops = {
+-    .proc_open = ssv6xxx_dbg_file_open,
+-    .proc_read = seq_read,
+-    .proc_lseek = seq_lseek,
+-    .proc_release = seq_release,
++static SSV_PROC_OPS ssv6xxx_dbg_fops = {
++    SSV_PROC_OWNER
++    .SSV_PROC_OPEN = ssv6xxx_dbg_file_open,
++    .SSV_PROC_READ = seq_read,
++    .SSV_PROC_LSEEK = seq_lseek,
++    .SSV_PROC_RELEASE = seq_release,
+ };
+ int ssv_init_cli (const char *dev_name, struct ssv_cmd_data *cmd_data)
+ {
